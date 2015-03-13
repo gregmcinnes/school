@@ -1,0 +1,404 @@
+% -----------------------------*- LaTeX -*------------------------------
+\documentclass[12pt]{report}
+% ------------------------------------------------------------------------
+% Packages
+% ------------------------------------------------------------------------
+\usepackage{amsmath,amssymb,amsfonts,graphicx,nicefrac,mathtools}
+\usepackage{nicedoc}
+\usepackage[body={7in, 9in},left=1in,right=1in]{geometry}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{wrapfig}
+% ------------------------------------------------------------------------
+% Macros
+% ------------------------------------------------------------------------
+%----
+% Sections added to table of contents, without numbering
+%----
+
+\newcommand{\psection}[1]{
+\phantomsection\addcontentsline{toc}{section}{#1}
+\section*{#1}
+}
+
+\newcommand{\pchapter}[1]{
+\phantomsection\addcontentsline{toc}{chapter}{#1}
+\chapter*{#1}
+}
+
+\newcommand{\psubsection}[1]{
+\phantomsection\addcontentsline{toc}{subsection}{#1}
+\subsection*{#1}
+}
+
+\newcommand{\psubsubsection}[1]{
+\phantomsection\addcontentsline{toc}{subsection}{........ #1}
+\subsubsection*{#1}
+}
+
+
+\newcommand{\lecture}[1]{
+\phantomsection\addcontentsline{toc}{section}{#1}
+\section*{Lecture: #1}
+}
+
+\newcommand{\plog}[1]{
+\phantomsection\addcontentsline{toc}{section}{#1}
+\section*{Log: #1}
+}
+
+%~~~~~~~~~~~~~~~
+% Environment shortcuts
+%~~~~~~~~~~~~~~~
+\def\balign#1\ealign{\begin{align}#1\end{align}}
+\def\baligns#1\ealigns{\begin{align*}#1\end{align*}}
+\def\bitemize#1\eitemize{\begin{itemize}#1\end{itemize}}
+\def\benumerate#1\eenumerate{\begin{enumerate}#1\end{enumerate}}
+\def\btab#1\etab{\begin{center}\begin{tabular}#1\end{tabular}\end{center}}
+\def\bcode#1\ecode{\begin{center}\c{#1}\end{center}}
+%~~~~~~~~~~~~~~~
+% Text with quads around it
+%~~~~~~~~~~~~~~~
+\newcommand{\qtext}[1]{\quad\text{#1}\quad} 
+%~~~~~~~~~~~~~~~
+% Shorthand for math formatting
+%~~~~~~~~~~~~~~~
+\def\mbb#1{\mathbb{#1}} 
+\def\mbi#1{\boldsymbol{#1}} % Bold and italic (math bold italic)
+\def\mbf#1{\mathbf{#1}}
+\def\mc#1{\mathcal{#1}}
+\def\mrm#1{\mathrm{#1}}
+\def\tbf#1{\textbf{#1}}
+\def\tsc#1{\textsc{#1}}
+%~~~~~~~~~~~~~~~
+% Common sets
+%~~~~~~~~~~~~~~~
+\def\reals{\mathbb{R}} % Real number symbol
+\def\integers{\mathbb{Z}} % Integer symbol
+\def\rationals{\mathbb{Q}} % Rational numbers
+\def\naturals{\mathbb{N}} % Natural numbers
+\def\complex{\mathbb{C}} % Complex numbers
+%~~~~~~~~~~~~~~~
+% Common functions
+%~~~~~~~~~~~~~~~
+\renewcommand{\exp}[1]{\operatorname{exp}\left(#1\right)} % Exponential
+\def\indic#1{\mbb{I}\left({#1}\right)} % Indicator function
+\providecommand{\argmax}{\mathop\mathrm{arg max}} % Defining math symbols
+\providecommand{\argmin}{\mathop\mathrm{arg min}}
+\providecommand{\arccos}{\mathop\mathrm{arccos}}
+\providecommand{\dom}{\mathop\mathrm{dom}} % Domain
+\providecommand{\range}{\mathop\mathrm{range}} % Range
+\providecommand{\diag}{\mathop\mathrm{diag}}
+\providecommand{\tr}{\mathop\mathrm{tr}}
+\providecommand{\abs}{\mathop\mathrm{abs}}
+\providecommand{\card}{\mathop\mathrm{card}}
+\providecommand{\sign}{\mathop\mathrm{sign}}
+\def\rank#1{\mathrm{rank}({#1})}
+\def\supp#1{\mathrm{supp}({#1})}
+\def\b#1{{\textbf{#1}}}
+\def\i#1{{\textif{#1}}}
+\def\c#1{{\texttt{#1}}}
+\def\m#1{$\mathbb{#1}$}
+%~~~~~~~~~~~~~~~
+% Common probability symbols
+%~~~~~~~~~~~~~~~
+\def\E{\mathbb{E}} % Expectation symbol
+\def\Earg#1{\E\left[{#1}\right]}
+\def\Esubarg#1#2{\E_{#1}\left[{#2}\right]}
+\def\P{\mathbb{P}} % Probability symbol
+\def\Parg#1{\P\left({#1}\right)}
+\def\Psubarg#1#2{\P_{#1}\left[{#2}\right]}
+\def\Cov{\mrm{Cov}} % Covariance symbol
+\def\Covarg#1{\Cov\left[{#1}\right]}
+\def\Covsubarg#1#2{\Cov_{#1}\left[{#2}\right]}
+\newcommand{\family}{\mathcal{P}} % probability family / statistical model
+\newcommand{\iid}{\stackrel{\mathrm{iid}}{\sim}}
+\newcommand{\ind}{\stackrel{\mathrm{ind}}{\sim}}
+\def\eq#1{\balign #1 \ealign}
+%~~~~~~~~~~~~~~~
+% Distributions
+%~~~~~~~~~~~~~~~
+\def\Gsn{\mathcal{N}}
+\def\Ber{\textnormal{Ber}}
+\def\Bin{\textnormal{Bin}}
+\def\Unif{\textnormal{Unif}}
+\def\Mult{\textnormal{Mult}}
+\def\NegMult{\textnormal{NegMult}}
+\def\Dir{\textnormal{Dir}}
+\def\Bet{\textnormal{Beta}}
+\def\Gam{\textnormal{Gamma}}
+\def\Poi{\textnormal{Poi}}
+\def\HypGeo{\textnormal{HypGeo}}
+\def\GEM{\textnormal{GEM}}
+\def\BP{\textnormal{BP}}
+\def\DP{\textnormal{DP}}
+\def\BeP{\textnormal{BeP}}
+\def\Exp{\textnormal{Exp}}
+%~~~~~~~~~~~~~~~
+% Theorem-like environments
+%~~~~~~~~~~~~~~~
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\newtheorem{example}{Example}
+\newtheorem{problem}{Problem}
+
+% ----------------------------------------------------------------------
+% Header information
+% ------------------------------------------------------------------------
+\begin{document}
+\course{BMI215}
+\coursetitle{Data Drive Medicine}
+\semester{Fall 2014}
+\lecturedate{notebook}       % month and day of lecture (omit year)
+\maketitle
+\begin{center}
+{\LARGE{A Statistical Approach to Automated Ontology
+Construction as a Scaffold for Annotation}}\\*\\{\large{
+\textit{Greg McInnes, Natalie Telis, Dana Wyman}}}
+\end{center}
+\begingroup
+\let\clearpage\relax
+\tableofcontents
+\endgroup
+
+%cheatsheet -- this is how to make tables. 
+%\begin{center}
+%\begin{tabular}{p{4cm}p{2cm}p{2cm}p{2cm}}
+%Region number&Chromosome&Start&End\\\hline
+%1&16&5579822&55798779\\
+%2&174&20581451&20581564\\
+%3&14&106479675&106479941\\
+%4&1&152555706&152586238\\
+%5&4&155803005&155803078\\
+%\end{tabular}
+%\end{center}
+
+%cheatsheet -- this is how to embedd images
+%\begin{center}
+%\includegraphics[scale=0.5]{/Users/ntelis/Documents/306b_Figures_Final/chr1_CNV_incidence.png}
+%\end{center}
+
+% ----------------------------------------------------------------------
+% Body of the document
+% ------------------------------------------------------------------------
+\addtocounter{chapter}{1}
+\pchapter{Final Project Report}
+\section{Abstract}
+Expert curation to construct ontologies for biomedical research and clinical application is a serious challenge. Multiple rounds of expert curation and validation may yield relationships -- for one disease. However, there are huge repositories of expert-approved, expert-created knowledge: scientific literature databases. The challenge of parsing this free-text has slowed NLP work in this field.  We aim to bypass these challenges by employing statistical enrichment identification to design and populate ontologies. First, we learn the relationships between a group of objects. Using these to design an ontology, we extract these relationships from scientific literature in an automated way to populate an ontological framework. We describe a tool that builds and populates a network of relationships between a query disease and potentially related genes, genetic variants, and other diseases. We learn relationship types by looking at relational word enrichment between known relationships. Then, given a disease of interest, we look at term co-enrichment in text about this disease to identify potentially related objects. We classify these objects as symptoms, drugs, genes, or other diseases. Then, we use our learned relationships to link objects to the query diseases. We display these edge labels, along with evidence scores and linking information such as CUIs and MeSH terms, by creating an OWL file to permit reasoning and query.
+We validate our tool with specific disease examples to indicate the validity of terms discovered with this approach, and automatedly create a file parsable by Protege to browse through the ontology.
+\clearpage
+\section{Motivation}
+Linking diseases with related genes and comorbidities by annotation can be an extremely useful tool in several areas. In medicine, annotation can provide doctors with important information on patient risks and potentially informative clinical and genetic tests. It can contextualize disease and improve personalization of treatment. Immediate access to comorbidities, alternate drug interactions, potentially related genetic variants, or symptoms of note can help a doctor make complete decisions for a patient's health.\\*\\
+Although research appears very separate, this kind of context can be useful for geneticists and other biomedical researchers as well. For example, it can pair disease phenotype with discovered loci to help elucidate mechanisms by which genes influence human health. It can pair drugs and genes of interest with different diseases to identify drugs which may be acting via a similar mechanism across different potential phenotypes. In this way, a deep annotation of drug, disease, symptom, and gene relationships can be useful across biomedicine.\\*\\
+However, annotation is extremely laborious. Annotation by natural language processing requires synthesis across many different datatypes, laborious curation or method development, and validation by experts in sub-fields, who may be difficult to find and have little time to devote to the task. Especially when given the need to synthesize information across fields where experts may have limited translational knowledge, the challenge of creating a robust ontology becomes very great.\\*\\
+We attempt an approach that is neither NLP nor expert curation. Since bodies of expert-curated information exist -- e.g., databases of scientific literature, which is expert-written and expert-reviewed -- can we use these documents to understand relationships? Rather than attempting NLP, we use enrichment of word co-occurences across hundreds of thousands of documents from the last six months. Given a disease of interest, we aim to accomplish two tasks: to (a) learn relationships between objects from literature, and to be able to (b) construct an ontology containing objects and relationships exclusively from text and statistical enrichment. We restrict our ontology to diseases, drugs, symptoms, and loci. To populate relationships between our classes, we use known disease-drug, disease-disease, disease-symptom, and disease-locus relationships to search for documents containing each pair. The enriched relational keywords in these documents inform our model of object-object relationships in our ontology.\\*\\
+Then, we search for terms which are statistically enriched in co-occurring lists with a disease query of interest. We classify these terms and populate our ontology with appropriate instances. We then identify relational keywords to classify edge-types and assign each relationship an evidence score.\\*\\
+We validate the quality of our term-finding procedure by manually confirming co-occurences in a few subtypes of diseases using expert-curated databases (as confirming them in literature would be tautological). We use databases of diseases, such as SNOMED-CT, to validate comorbidities or disease subtypes; we use databases such as UCSC Genome coupled with OMIM (Online Mendelian Inheritance in Man) and KEGG (disease pathways) to confirm manually the validity of our annotations.\\*\\
+By doing this, we develop a method of creating meaningful networks linking diseases and genes without heavy user or expert input which nonetheless has been validated by experts, because we draw our annotations out of expert-created, expert-confirmed research. 
+\clearpage
+\section{Methods}
+\subsection{Problem-Solving Mechanism}
+\psubsubsection{Data preparation}
+We construct a PSM which is a lightweight detector of statistical enrichment of co-annotation between texts. To annotate texts with terms, we construct a dictionary of scientific terms from the last 6 months of literature from PubMed (approximately 450,000 papers). We filter out terms prevalent above 10\% of total words (these include things like “research”, “analysis”, etc.), determining that they are syntactically unimportant. We standardize keyword formatting and annotate every paper with informative keywords occuring in that paper.
+\psubsubsection{Enrichment identification}
+Let us discuss the most simple case: determining the enrichment of an annotation word $w_i$, which annotates some group of papers $P_i$. How do we identify whether $w_i$ is statistically enriched as an annotation of some other group of papers $Q$? This is analogous to asking whether the set of papers containing the word ``streptozotocin" is enriched in the set of papers which also contain the word ``diabetes". 
+The Fisher's exact test defines the probability of a table of counts \begin{bmatrix}{a&b\\c&d}\end{bmatrix} as $$p = \frac{\begin{pmatrix} a+b\\a\end{pmatrix}\begin{pmatrix} c+d\\c\end{pmatrix}}{\begin{pmatrix} (a+b+c+d)\\a+c\end{pmatrix}} = \frac{(a+b)!(c+d)!(a+c)!(b+d)!}{a!\ b!\ c!\ d!\ (a+b+c+d)!}$$
+We can use a one-sided Fisher's exact test to preferentially identify enrichments within our test set (as opposed to depletions, which are not relevant for the kinds of relationships we are interested in). As the Fisher's exact test provides an exact probability, it is more accurate in this case than the $\chi^2$ test, especially as some terms are very rare but very relevant (such as newly identified single nucleotide polymorphisms (SNPs)). 
+
+\psubsubsection{Relationship learning}
+
+In order to identify subtypes of relationships between objects, we use known relationships (for example, ``streptozotocin" is a drug which induces ``diabetes"; ``lisinopril" is a drug which is a therapy for ``hypertension"). Given two terms, we identify terms which are enriched within the set of papers containing both. Then, we rank these terms, by how many documents these words appear in overall. This yields words which are commonly used both within and outside of the set, and yet are still enriched in the particular set. 
+In particular, these lists of top words are enriched for relational terms. For example, given a combination search of ``streptozotocin" and ``diabetes", the top result of the PSM is ``induce". Likewise, the top result of ``slc30a8" (a gene with several mutations protective against diabetes) and ``diabetes" is ``protect". 
+
+We use known examples in order to curate a list of these enriched terms that occur consistently between well-annotated relationships. We tie keywords to relationships -- for example, 'risk' and 'factor' are tied to the increasesRiskOf (or hasRiskReducedBy reciprocal relationship) edge. 
+
+\subsection{Ontology Definition}
+We designed a simple OWL ontology to represent diseases and associated concepts, which can be populated using statistical searches through biomedical texts. We selected our classes so as to capture interactions relevant to clinical and research settings, designing a general structure that would be applicable for most query diseases. At the highest level of the hierarchy, the classes are disease, drug, symptom, and locus.
+\psubsubsection{Class definitions}
+\textbf{Disease}: A condition described by SNOMED-CT's list of complaints. \\
+\textbf{Drug}: Any chemical, compound, or molecule used to treat or induce disease.  \\
+\textbf{Symptom}: A physical feature that indicates the manifestation of disease. \\
+\textbf{Locus}: A genomic feature that is linked to disease.  The Locus class has three subclasses: Chromosomal Region, Gene, and SNP. \\
+\textbf{Chromosomal Region}: A section of one of the 23 nuclear chromosomes or mitochondrial chromosome.\\
+\textbf{Gene}: A sequence of bases within a chromosome that encodes a protein.\\
+\textbf{SNP}: A non-reference matching position in a single base in the genome.
+
+\psubsubsection{Object properties}
+Object relationship properties for the ontology were selected as described in the Relationship Learning section.
+
+\subsubsection{Edge evidence}
+We assign edge relationships and evidence to a suggested relationship according to the following guide. 
+
+\begin{center}
+\btab{p{1.5cm}p{8cm}}
+Score&Definition\\\hline
+3&Label is at the top of a list of words enriched via one-sided Fisher's exact test\\
+2&Co-occurence of edge label keywords in close context -- where query disease and object occur within 10 words of one-another, label occurs between these words\\
+1&Co-occurence of edge label keywords in documents sharing disease query and object.\\
+0&No edge label evidence.
+\etab
+\end{center}
+
+\subsubsection{Construction of framework}
+\begin{wrapfigure}{l}{0.35\textwidth}
+\includegraphics[scale=0.60]{./obj_prop_hier.png}
+\begin{center}{\footnotesize{\textbf{Figure 1}: Object hierarchy as viewed in Prot\'{e}g\'{e} 4.3 }}\end{center}
+\end{wrapfigure}
+After classes were selected and object properties determined through curation, the basic ontology framework was assembled in Prot\'{e}g\'{e} 4.3. The first step was to add classes and specify hierarchical relationships between them as described in the definition section. Sibling classes were made  disjoint. Next, we organized the object properties into a hierarchy and added them to the ontology (Fig. 1).  The properties hasProposedAssociation and hasConfirmedAssociation were placed at the top since they are the most general relationships. We made the more specific relationships (eg. hasTherapy, increasesRiskOf) subproperties of hasConfirmedAssociation, because strong evidence is required in the literature for our system to flag such connections as significant. These relationships were then grouped further by whether they directly modify an object or affect risk. \\*\\
+To put it all together, we edited each class description to include the appropriate object properties and cardinalities (Fig. UML thing). In addition, each class was edited to include the data properties hasMeSH and hasCUI.  The HermiT 1.3.8 reasoner was run to ensure that the ontology was consistent. \\
+\begin{center}
+\includegraphics[scale=0.60]{./UML_diagram.png} \\
+{\footnotesize{\textbf{Figure 2}: UML Diagram of Basic Ontology. Object properties are shown as dotted lines. For simplicity, object property edges are labeled in only one direction, although inverse properties exist. }}
+\end{center}
+
+\subsection{Ontology Construction} 
+\psubsubsection{Results identification}
+Results for a query disease are top enriched terms from application of our PSM to that term. The PSM engine is initialized, with annotation and text information, but after initialization, it requires only the name of a query disease to provide results.
+\psubsubsection{Object classification}
+Term classification was performed using a combination of the Unified Medical Language Sytem (UMLS)[CITATION NEEDED], Ensembl, and regular expressions.  Each term was queried against a local install of the UMLS Metathesaurus database in order to determine if there was an associated Concept Unique Identifier (CUI).  Terms were classified preferentially as MeSH terms[CITATION NEEDED], SnomedCT[CITATION NEEDED], then any matching terms, in that order.  If a MeSH tree number existed for matching CUIs then terms could be classified due to the systematic labeling system implemented by MeSH.  For example, all gene tree numbers beginning with “G05.360”, so all tree number that start with “G05.360” can be classified as genes.  This process was used to classify terms as diseases, drugs, genes, or symptoms.  
+
+For some terms multiple CUIs and/or multiple MeSH tree numbers were identified.  Some redundancy exists among MeSH tree numbers, so this is not unexpected.  In each case where multiple tree numbers are found the system attempts to resolve them into a single classification based on the systematic labeling system.  If any disagreement is identified between the MeSH tree number classifications they are discarded and no classification is made.  
+
+Classification of tree numbers proceeds from the most specific labels to the most general.  For instance, within the MeSH hierarchy symptoms fall under the top level category “C”, which is diseases.  All symptoms begin with the MeSH code C23.888.  To avoid classifying symptoms as diseases the classification system attempts to identify a MeSH tree number as a symptom (C23.888) before checking if it is a diseases (C).  
+
+Additional efforts were made to classify genes and SNPs.  Many gene symbols either do not exist in the UMLS Metathesaurus or there are tree numbers for both the gene and the gene product.  In instances where there is disagreement between the classifications terms are preferentially classified as genes.  Additional effort was made to classify genes by querying all terms against a list of gene symbols from Ensembl.  SNPs were classified using a simple regular expression.  Only Reference SNP cluster IDs (rsids) were matched by the regular expression.
+\psubsubsection{Edge identification}
+For each classified object, papers containing that object and the query disease are combed for enriched words. Then given, the papers sharing both terms of interest and a list of keywords linked to relationships identified for that object type, an optimal edge (defined as the edge with the highest evidence) is assigned according to the evidence levels described in our ontology development section.
+
+First, we search for edge keywords in top enrichments. Then, we search for edge keywords in close context of the drug and disease term (e.g., where drug and disease occur in close context, we search for edge labels). Finally, we identify co-occurence of edge label in documents. In the absence of this evidence, we declare there is no evidence for any edge label. We link edge keywords to learned object properties in our ontology and annotate the object properties with an evidence level. We output a Manchester syntax OWL file containing all individuals and validated edges (with evidence > 0) for visualization.
+
+We create a post-processing script for combining multiple OWL files together in order to create a large combined ontology, but this is separate from our Search-Classify-Link PSM model. 
+
+\psubsubsection{Visualization and reasoning}
+Once a Manchester syntax OWL file has been generated for a query disease, the populated ontology is loaded into Prot\'{e}g\'{e} 4.3 for visualization and reasoning.  The OntoGraf tab allows the user to see relationships between different individuals and classes, and the edges are color-coded by object property. The DL Query tab allows the user to reason over the ontology by entering queries.  For example, to find all drugs in the ontology that are used to treat diabetes, the user can enter "Drug and isTherapyFor value Diabetes".
+\subsection{Evaluation}
+This automated ontology construction consists of three main sections: identification, classification, and modeling.  In order to evaluate each section three diseases were chosen to run through each portion.  We chose diseases to fit into the the following three categories: a well characterized mono-allelic disease with mendelian inheritance, a fairly well characterized disease with fairly heritable mechanisms, and a disease that is not well characterized with unknown heritability.  The diseases we have chosen to fit into these are cystic fibrosis, diabetes, and autism.
+ 
+
+\psubsection{Enrichment evaluation}
+
+The identification of enriched terms was evaluated by manually annotating the terms found to be enriched with autism, cystic fibrosis, and diabetes. The enrichment was judged on the percentage of terms that were found to belong to the specified classes (disease, drug, symptom, gene, SNP).\footnote{See Results, table 2.}
+\psubsection{Classification evaluation}
+The term classifier was evaluated by assessing the sensitivity and precision of the classification of manually annotated terms that were identified to be statistically enriched in three test diseases.  Enriched terms associated with autism, cystic fibrosis, and diabetes were manually placed into five categories: diseases, drugs, genes, SNPs, or no classification.  True positives within each class are defined as classifications that matched those of the manually classifications, false negatives within a class are defined as classifications that were anything other than the manually curated definition, and false positives within each class are defined as a term that was programmatically classified as belonging to the class that was not manually determined to belong to that class.\footnote{See Results, table 3.}
+
+\psubsection{Ontology evaluation}
+The ontology evaluation focuses on the correctness of the edge types.  Each edge is individually evaluated for correctness given the true relationship between the disease and the node it connects.
+
+\psubsection{Overall evaluation}
+Using each candidate disease we carefully consider the terms that are deemed statistically significant and see where they fit into our model.  Given that each of our evaluation diseases are well studied we are able to look at the terms identified and judge whether their relationship to the query disease is apt. We quantify the accuracy of our method based on our gold standard manual classification.
+
+
+\clearpage
+\section{Results}
+Below are some summary tables for three example diseases to indicate the validity of our methods.
+
+\psubsubsection{Table 1. Raw results from significant term annotator.}
+{\footnotesize{\begin{tabular}{p{1.5cm}p{14cm}}
+Disease&Results\\\hline
+Cystic fibrosis&cf, cftr, fev1, aeruginosa, mucus, bronchiectasis, mucociliary, sputum, exocrine, quasirandomised, nontuberculous, cepacia, correctors, airways, abscessus, transmembrane, cenocepacia, potentiators, aztreonam, conductance, fibrosisrelated, plugging, deferens, meconium, sweat, isc, arpkd, dornase, calu3, tmem16a, airliquid, pnafish, phenazine, ataluren, nebulizers, exotoxin, euryhaline, burkholderia, polycystin1, pyocyanin, respimat, neutrophilmediated, angioinvasive, gelforming, palivizumab, dubliniensis, spectrofluorometric, dermatitidis, carolis, tobramycin, nippv, polyporales, hypersecretion, questionnairerevised, zellweger, knox, noncystic, g551d, anthropi, col4a5, ivacaftor, mucins, retrorectal, nglycoproteins, entericcoated, stanols, sarcoglycan, biomet, betacells, pkhd1, abpa, overanticoagulation, bilevel, cxcr2mediated, helperdependent, kynurenines, lasr, amineassociated, enac, hypokalaemic, ligandassisted, pspa, pendred, depolymerase, guanylin, decalin, cystogenesis, study†, hominissuis, haemoglobinopathies, leukocidinpositive, aqp5, vacuolartype, oxygenenhanced, infectionmediated, sphingosine1, nppb, investigatordriven, meprin, tpl2\\*\\
+Diabetes&mellitus, hba1c, glycemic, t2dm, streptozotocin, a1c, streptozotocininduced, t1d, prediabetes, βcell, glycaemic, diabetesrelated, antihyperglycemic, insipidus, glycated, hypoglycaemic, sulfonylureas, diabetesinduced, t1dm, betacell, glargine, type 2, diabetesassociated, incretin, diabetesa, liraglutide, nondiabetics, peptidase4, antidiabetes, insulinproducing, prandial, gck, βcells, detemir, smbg, alloxan, gdm, sglt2, glucoselowering, alloxaninduced, stz, noninsulin, iadpsg, postload, noninsulindependent, type�2, glucosuria, gotokakizaki, incretinbased, iapp, kcnj11, insulintreated, dysglycemia, diabetogenic, saxagliptin, type 2, mellitusa, exenatide, maturityonset, sensoraugmented, rs7903146, slc30a8, sitagliptin, sulphonylurea, empagliflozin, lada, macroangiopathy, canagliflozin, csii, linagliptin, glitazones, dipeptidylpeptidase4, streptozotocintreated, sodiumglucose, degludec, vildagliptin, abcc8, dapagliflozin, albiglutide, diabetesspecific, glimepiride, basalbolus, glipizide, aspart, znt8, hiapp, 15anhydroglucitol, voglibose, lispro, glulisine, teneligliptin\\*\\
+Autism&spectrum, neurodevelopmental, intellectual, toddlers, imitation, stereotypic, fragile, hfa, iq, fmrp, fmr1, disorderspecific, autismrelated, asd, mecp2, nonverbal, asperger, tsc1, transsynaptic, selfinjurious, microdeletion, autismlike, neurogenetic, attentiondeficit, autisticlike, tact, td, neuroligin, highfunctioning, quotient, nonsocial, measlesmumpsrubella, augmentative, rai1, smithlemliopitz, opercularis, sociocognitive, avpr1a, auditoryvisual, parentoforigin, neuroligin3, angelman, arraycgh, sociosexual, rett, thimerosal, 15q11q13, 16p112, 17q12, thimerosalcontaining, peermediated, mbd5, corticogenesis, tiagabine, scurvy, attachmentbased, velocardiofacial, fastigial, neuroethology, neurexin, landaukleffner, eggallergic, drd3, hypersensitivities, sociability, mglur, stereotypies, inflexibility, 15q133, hypersexual, externalising, scn8a, xinactivation, cntnap2, duf1220, reeler, oromotor, auts2, subsynaptic, socialcognitive, neuroeconomic, videofeedback, macrocephaly, xrelated, autismassociated, junctionrelated, setbp1, mauthner, multiplebaseline, birthcohort, marble, zenk, coffinsiris, valproateinduced, economo, ankyrinrepeat, parentimplemented, huwe1, lpta, parentbased
+\end{tabular}}}
+
+\psubsubsection{Table 2. Recovery of correct object types and relevance summary statistics.}
+\begin{tabular}{p{3cm}p{5cm}p{4cm}}
+Disease&Correct term type\footnotemark &Relevant to disease\\\hline
+Cystic fibrosis&0.33&$0.48^3$\\
+Diabetes&0.56&1.0\\
+Autism&0.46&1.0\\
+\end{tabular}
+\footnotetext{We search for diseases or disease subtypes, variants (chromosomal locations, alleles, SNP IDs), genes, and drugs -- all other related terms, such as symptoms, study types, or other terms are thrown out. In future work, network could be expanded to include these kinds of terms as well.\\*\\$^3$Note that the cystic fibrosis representation is unusually low. Many of the identifiers are related to infections common in cystic fibrosis patients, but our manual validation focuses on first-order connections, not second-order connections. 100\% of terms identified are related either in the first order or in the second order.}
+
+\psubsubsection{Table 3. Object classification accuracy relative to manual curation.}
+\footnotesize{\begin{tabular}{p{3cm}p{1.5cm}p{1.5cm}p{1.5cm}}
+Classification&Count&Sensitivity&Precision\\\hline
+Unclassified&210&0.95&0.84\\
+Gene&22&0.86&0.86\\
+Drug&31&0.39&0.71\\
+Disease&27&0.33&0.69\\
+SNP&1&1&1\\
+Overall&291&0.83&0.83
+\end{tabular}}
+
+\psubsubsection{Table 4. Edge label validation.}
+\footnotesize{\begin{tabular}{p{3cm}p{1.5cm}p{1.5cm}p{1.5cm}}
+Classification&Total Count&Number Correct&Sensitivity\\\hline
+Overall&29&25&0.83
+\end{tabular}}
+
+Note that this only refers to edge labels where some level of evidence was assigned -- if no label was assigned, no classification was given.  Only terms that were correctly classified were included in this validation.
+
+\psubsubsection{Visual demonstration of OntoGraf ontology layout.}
+\begin{center}
+\includegraphics[scale=0.35]{./comb_diabetes_fig.png}\\
+{\footnotesize{\textbf{Figure 3}: Ontology Visualization in Prot\'{e}g\'{e} using OntoGraf. }}
+\end{center}
+\\*\\
+Although sensitivity drops off for certain object types, especially drugs (in particular, we observe challenges with associating a common drug name with the MeSH term or CUI) we retain good precision with classification. This precision is carried throughout our method, suggesting that the relationships and edge labels being curated are quality. These tables confirm the usefulness of our method.
+
+
+\clearpage
+\section{Discussion}
+Here we show the utility of a statistical approach to curation. This work provides a solid scaffold for manual curation for both known and unknown diseases. It also enables construction of an ontology to reason over to answer questions of medical and research relevance. It does this without a wealth of complex syntactical analysis or NLP. This demonstrates that a statistical approach to learning probable relationships could be used to robustly identify relationships between different objects that are relevant in clinical and research contexts. 
+
+Sensitivity, particularly for terms which are challenging to classify -- such as common abbreviations (e.g., ``dm" for diabetes mellitus; ``stz" for streptozotocin) or drug common names -- suffers. In this sense, the project could be improved by developing methods to disambiguate terms, as this would be responsible for the greatest gains in sensitivity.
+
+We display results for cystic fibrosis to point out a challenge with our classification by hand. As we're being very strict, we classify only direct (first-order) interactions with the query disease. However, many interactions with cystic fibrosis are actually second-order. There are many diseases associated with cystic fibrosis (for example, frequent and unusual infections), and so many genes or drugs which come up are therapies for these second order interactions, rather than for cystic fibrosis itself. As a result, we are forced to classify them as incorrect, when in fact, there is simply a more complex representation of the interaction that is known.
+
+We could work around this by permitting second order interactions and trying to learn relationship names for such interactions. We could also work around this by layering more ontologies -- by looking up cystic fibrosis and the other associated diseases, then overlaying the information to create one large OWL file, we could potentially disambiguate the seemingly ``incorrect" link.
+
+To expand our approach, we could build on this approach by expanding the breadth of our ontology. Because of the granularity of MeSH term and CUI matching, we may be able to classify drug subtypes, gene products, infectious agents, and many other object types. We achieve great precision with label learning and label identification, which is significantly unexpected. The potential to broaden the relationship-learning system and using the PSM to learn relationship types between more and more classes could be an extremely useful expansion of the work. Given the ease of using this approach to learn candidate relationship types between objects, we believe could extend our ontology far past these few object types. 
+
+Although we implement this ontology for reasoning through Prot\'{e}g\'{e}, we could enable automated query through a database like MySQL. This could enable rapid candidate gene identification for association studies as well as serve to make broadly linked clinical information accessible to researchers. 
+
+\section{Division of Labor}
+Natalie implemented the PSM in Python as well as a demo in iPython Notebook. She also used the PSM to learn relationships for defining edges within the ontology. In addition, the data used for annotation comes from a database maintained by her research group.
+
+Greg developed the term classification system and evaluated its performance.  This involved writing a python script to query a local install of the UMLS metathesuarus and determining what logic to use for classification.
+
+Dana built the ontology framework for our results and developed a system for populating and visualizing the ontology. The framework was built by taking object classifications and curated relationships from the PSM and organizing them into a hierarchy of classes and object properties. 
+
+\section{Acknowledgements}
+This work was conducted using the Prot\'{e}g\'{e} resource, which is supported by grant GM10331601 from the National Institute of General Medical Sciences of the United States National Institutes of Health.
+
+\section{Citations}
+
+Bodenreider O: The unified medical language system (UMLS): integrating biomedical terminology.
+Nucleic Acids Res 2004, 32(Database):D267-D270.
+January\\
+
+U.S. National Library of Medcine. Medical subject headings [Internet]. Bethesda (MD): U.S. National Library of Medcine; 2014updated 2014 Mar 11
+Available from: http://www.nlm.nih.gov/mesh/MBrowser.html\\
+
+International Health Terminology Standards Development Organisation [Internet]. Copenhagen: International Health Terminology Standards Development Organisation. SNOMED CT; [cited 2015 March 13]. Available from: http://www.ihtsdo.org/snomed-ct/\\
+
+
+ 
+\clearpage
+\section{Appendix}
+\subsection{Figures}
+%cheatsheet -- this is how to embedd images
+%\begin{center}
+%\includegraphics[scale=0.5]{/Users/ntelis/Documents/306b_Figures_Final/chr1_CNV_incidence.png}
+%\end{center}
+%and this is how to do footnote text type figure labels
+%\begin{center}{\footnotesize{such footnote size text!}}\end{center}
+\begin{center}
+\includegraphics[scale=0.47]{./disease_screen.png} \\
+{\footnotesize{Figure 1A.1: Screenshot of the Disease class in the Prot\'{e}g\'{e} ontology}} \\
+\includegraphics[scale=0.47]{./drug_screen.png} \\
+{\footnotesize{Figure 1A.2: Screenshot of the Drug class in the Prot\'{e}g\'{e} ontology}} \\
+\includegraphics[scale=0.47]{./locus_screen.png} \\
+{\footnotesize{Figure 1A.3: Screenshot of the Locus class in the Prot\'{e}g\'{e} ontology}} \\
+\includegraphics[scale=0.47]{./gene_screen.png} \\
+{\footnotesize{Figure 1A.4: Screenshot of the Gene class in the Prot\'{e}g\'{e} ontology}} \\
+\includegraphics[scale=0.47]{./SNP_screen.png} \\
+{\footnotesize{Figure 1A.5: Screenshot of the SNP class in the Prot\'{e}g\'{e} ontology}} \\
+\includegraphics[scale=0.47]{./symptom_screen.png} \\
+{\footnotesize{Figure 1A.6: Screenshot of the Symptom class in the Prot\'{e}g\'{e} ontology}} \\
+\end{center}
+
+\subsection{Code}
+
+
+\end{document}
