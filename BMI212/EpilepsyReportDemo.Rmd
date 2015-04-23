@@ -39,7 +39,12 @@ phase3 = data.frame(
 df = rbind(phase1, phase2, phase3)
 ```
 
+# Epilepsy Report Demo
 
+**Patient**: John Doe
+**Report Date**: April 22, 2015
+
+## Seizure Summary
 ```{r echo=FALSE, message=FALSE, warning=FALSE, comment=NA, results="asis"}
 summary = ddply(df,~Medication,summarise,Frequency=length(Medication)/10, 
       Average_Severity=mean(Severity),SD_Severity=sd(Severity),
@@ -49,7 +54,7 @@ print(xtable(summary), type="html", include.rownames=F)
 ```
 
 
-```{r titvByWindow, echo=FALSE, fig.align="center", fig.width=10, message=FALSE, comment=NA}
+```{r seizureChart, echo=FALSE, fig.align="center", fig.width=10, message=FALSE, comment=NA}
 ggplot(df, aes(Date, Severity, size=Duration, color=Medication)) +
   geom_point() +
   geom_vline(aes(xintercept=as.numeric(drug1start)), linetype=4, colour="black") +
