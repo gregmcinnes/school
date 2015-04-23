@@ -1,0 +1,61 @@
+---
+title: "Epilepsy Report Demo"
+author: "Gregory McInnes"
+date: "April 22, 2015"
+output: html_document
+---
+
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+
+# Load packages
+library(reshape2) # for melt
+library(ggplot2)
+library(plyr)
+require(xtable)
+
+# Generate simulated data
+start <- ISOdate(2015, 1, 1, tz = "")
+phase1 = data.frame(
+  Date  = start + round(runif(44, max = 10 * 86400)),
+  Severity = round(runif(44, 2, 5)),
+  Duration = round(runif(44, 4, 7)),
+  Medication = "None")
+
+drug1start <- ISOdate(2015, 1, 11, tz = "")
+phase2 = data.frame(
+  Date  = drug1start + round(runif(23, max = 10 * 86400)),
+  Severity = round(runif(23, 2, 4)),
+  Duration = round(runif(23, 4, 10)),
+  Medication = "Clobazam")
+
+drug2start <- ISOdate(2015, 1, 21, tz = "")
+phase3 = data.frame(
+  Date  = drug2start + round(runif(4, max = 10 * 86400)),
+  Severity = round(runif(4, 1, 2.5)),
+  Duration = round(runif(4, 1, 4)),
+  Medication = "Phenobarbital")
+  
+df = rbind(phase1, phase2, phase3)
+```
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, comment=NA, results="asis"}
+summary = ddply(df,~Medication,summarise,Frequency=length(Medication)/10, 
+      Average_Severity=mean(Severity),SD_Severity=sd(Severity),
+      Average_Duration=mean(Duration),SD_Duration=sd(Duration))
+
+print(xtable(summary), type="html", include.rownames=F)
+```
+
+
+```{r titvByWindow, echo=FALSE, fig.align="center", fig.width=10, message=FALSE, comment=NA}
+ggplot(df, aes(Date, Severity, size=Duration, color=Medication)) +
+  geom_point() +
+  geom_vline(aes(xintercept=as.numeric(drug1start)), linetype=4, colour="black") +
+  geom_vline(aes(xintercept=as.numeric(drug2start)), linetype=4, colour="black") +
+  ggtitle("Seizures") +
+  scale_size(name  ="Duration in Minutes")
+```
+
+
