@@ -42,6 +42,7 @@ df = rbind(phase1, phase2, phase3)
 # Epilepsy Report Demo
 
 **Patient**: John Doe
+
 **Report Date**: April 22, 2015
 
 ## Seizure Summary
