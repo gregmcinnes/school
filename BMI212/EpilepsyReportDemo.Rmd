@@ -51,6 +51,9 @@ summary = ddply(df,~Medication,summarise,Frequency=length(Medication)/10,
       Average_Severity=mean(Severity),SD_Severity=sd(Severity),
       Average_Duration=mean(Duration),SD_Duration=sd(Duration))
 
+Start_Date = as.character(as.Date(c(start, drug1start, drug2start)))
+summary = cbind(summary, Start_Date)
+
 print(xtable(summary), type="html", include.rownames=F)
 ```
 
