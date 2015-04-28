@@ -1,10 +1,9 @@
----
-title: "Epilepsy Report Demo"
-author: "Gregory McInnes"
-date: "April 22, 2015"
-output: html_document
----
 
+# Aggregate Seizure Report
+
+**Patient**: John Doe
+
+**Report Date**: April 22, 2015
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE}
 
@@ -12,7 +11,7 @@ output: html_document
 library(reshape2) # for melt
 library(ggplot2)
 library(plyr)
-require(xtable)
+library(xtable)
 
 # Generate simulated data
 start <- ISOdate(2015, 1, 1, tz = "")
@@ -39,17 +38,13 @@ phase3 = data.frame(
 df = rbind(phase1, phase2, phase3)
 ```
 
-# Epilepsy Report Demo
-
-**Patient**: John Doe
-
-**Report Date**: April 22, 2015
 
 ## Seizure Summary
 ```{r echo=FALSE, message=FALSE, warning=FALSE, comment=NA, results="asis"}
-summary = ddply(df,~Medication,summarise,Frequency=length(Medication)/10, 
-      Average_Severity=mean(Severity),SD_Severity=sd(Severity),
-      Average_Duration=mean(Duration),SD_Duration=sd(Duration))
+summary = ddply(df,~Medication,summarise,Daily_Frequency=length(Medication)/10, 
+      Total=length(Medication),
+      Mean_Severity=mean(Severity),SD_Severity=sd(Severity),
+      Mean_Duration=mean(Duration),SD_Duration=sd(Duration))
 
 Start_Date = as.character(as.Date(c(start, drug1start, drug2start)))
 summary = cbind(summary, Start_Date)
@@ -57,14 +52,45 @@ summary = cbind(summary, Start_Date)
 print(xtable(summary), type="html", include.rownames=F)
 ```
 
-
-```{r seizureChart, echo=FALSE, fig.align="center", fig.width=10, message=FALSE, comment=NA}
+## Figures
+#### Seizures Over Time
+```{r aggRep-seizuresOverTime, echo=FALSE, fig.align="center", fig.width=10, message=FALSE, comment=NA}
 ggplot(df, aes(Date, Severity, size=Duration, color=Medication)) +
   geom_point() +
   geom_vline(aes(xintercept=as.numeric(drug1start)), linetype=4, colour="black") +
   geom_vline(aes(xintercept=as.numeric(drug2start)), linetype=4, colour="black") +
-  ggtitle("Seizures") +
+  ggtitle("Seizure Severity & Duration Over Time") +
   scale_size(name  ="Duration in Minutes")
 ```
+
+#### Severity
+```{r aggRep-seizureSeverity, echo=FALSE, fig.align="center", fig.width=10, message=FALSE, comment=NA}
+ggplot(df, aes(Medication, y = Severity, fill = Medication)) + 
+  geom_boxplot() + 
+  geom_jitter() + 
+  ggtitle("Seizure Severity")
+```  
+
+#### Duration
+```{r aggRep-seizureDuration, echo=FALSE, fig.align="center", fig.width=10, message=FALSE, comment=NA}
+ggplot(df, aes(Medication, y = Duration, fill = Medication)) + 
+  geom_boxplot() + 
+  geom_jitter() +
+  ggtitle("Seizure Duration")
+```
+
+#### Frequency
+```{r aggRep-seizureFrequency, echo=FALSE, fig.align="center", fig.width=10, message=FALSE, comment=NA}
+ggplot(df, aes(Medication, fill = Medication)) +
+  geom_bar() +
+  ggtitle("Seizure Count") + 
+  ylab("Count")
+```
+
+
+
+
+
+
 
 

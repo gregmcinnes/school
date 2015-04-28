@@ -1,0 +1,71 @@
+
+# Epilepsy Report 
+## Seizure Activity Since Last Visit
+
+**Patient**: John Doe
+
+**Report Date**: April 22, 2015
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+
+# Load packages
+library(reshape2) # for melt
+library(ggplot2)
+library(plyr)
+library(xtable)
+
+# Generate simulated data
+start <- ISOdate(2015, 4, 10, tz = "")
+df = data.frame(
+  Date  = start + round(runif(44, max = 12 * 86400)),
+  Severity = round(runif(44, 2, 5)),
+  Duration = round(runif(44, 4, 7)),
+  Medication = "None")
+  
+
+```
+
+
+## Seizure Summary
+```{r echo=FALSE, message=FALSE, warning=FALSE, comment=NA, results="asis"}
+summary = ddply(df,~Medication,summarise,DailyFrequency=length(Medication)/10,
+      Total=length(Medication),
+      Mean_Severity=mean(Severity),SD_Severity=sd(Severity),
+      Mean_Duration=mean(Duration),SD_Duration=sd(Duration))
+
+
+print(xtable(summary), type="html", include.rownames=F)
+```
+
+## Figures
+#### Seizures Over Time
+```{r visit-seizuresOverTime, echo=FALSE, fig.align="center", fig.width=10, message=FALSE, comment=NA}
+ggplot(df, aes(Date, Severity, size=Duration, color=Medication)) +
+  geom_point() +
+  ggtitle("Seizure Severity & Duration Over Time") +
+  scale_size(name  ="Duration in Minutes")
+```
+
+#### Severity
+```{r visit-seizureSeverity, echo=FALSE, fig.align="center", fig.width=10, message=FALSE, comment=NA}
+ggplot(df, aes(Medication, y = Severity, fill = Medication)) + 
+  geom_boxplot() + 
+  geom_jitter() + 
+  ggtitle("Seizure Severity")
+```  
+
+#### Duration
+```{r visit-seizureDuration, echo=FALSE, fig.align="center", fig.width=10, message=FALSE, comment=NA}
+ggplot(df, aes(Medication, y = Duration, fill = Medication)) + 
+  geom_boxplot() + 
+  geom_jitter() +
+  ggtitle("Seizure Duration")
+```
+
+
+
+
+
+
+
+
