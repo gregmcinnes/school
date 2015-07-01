@@ -1,0 +1,17 @@
+12
+21
+XXXXXXXXXXXXXXXXXXXXX
+X-------------------X
+X------XXXXXXXX-----X
+X-----X--------X----X
+X----X--------------X
+X----X--------------X
+X----X----XXXXXX----X
+X----X---------X----X
+X-----X--------X----X
+X------XXXXXXXX-----X
+X-------------------X
+XXXXXXXXXXXXXXXXXXXXX
+# Just a G
+# Reaches a stable state after 110 generations 
+# Has some cool animations before then
