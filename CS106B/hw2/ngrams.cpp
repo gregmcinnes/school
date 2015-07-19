@@ -1,6 +1,14 @@
-// This is the CPP file you will edit and turn in.
-// Also remove these comments here and add your own.
-// TODO: remove this comment header
+// Greg McInnes
+// CS 106B
+// Homework 2
+// July 7, 2015
+//
+// N-Grams
+// ngrams.cpp
+// This program produces random text based on provided literature.  The user
+// submits a body of text and a number which is used to break up the text into
+// phrases.  The program then outputs a randomly generated passage of a defined
+// length.
 
 #include <cctype>
 #include <cmath>
@@ -17,6 +25,33 @@
 
 using namespace std;
 
+// Function prototypes
+void print_header();
+string get_file();
+int get_n();
+int get_number_of_words(int n);
+Queue<string> read_file(string text_file);
+Map<Vector<string>, Vector<string>> create_map(Queue<string> & text_queue, int & n);
+string get_max(Map<string, int> & count_map);
+string choose_next(Vector<string> & values);
+bool generate_output(Map<Vector<string>, Vector<string>> & text_map, int & n);
+
+// Main
+int main() {
+    print_header();
+    string text_file = get_file();
+    Queue<string> text_queue = read_file(text_file);
+    int n = get_n();
+    Map<Vector<string>, Vector<string>> text_map = create_map(text_queue, n);
+    bool play = true;
+    while(play) {
+        play = generate_output(text_map, n);
+    }
+    cout << "Exiting." << endl;
+    return 0;
+}
+
+// Print welcome message
 void print_header() {
     cout << "Welcome to CS 106B Random Writer ('N-Grams').\n"
             "This program makes random text based on a document.\n"
@@ -24,11 +59,13 @@ void print_header() {
             "of words, and I'll create random text for you.\n" << endl;
 }
 
+// Get text file from user
 string get_file() {
     string file = promptUserForFile("Input file name? ");
     return file;
 }
 
+// Get N
 int get_n() {
     int n = 0;
     while (n < 2) {
@@ -40,6 +77,7 @@ int get_n() {
     return n;
 }
 
+// Get the number of words to generate
 int get_number_of_words(int n) {
     int word_count = 0;
     while (word_count < n) {
@@ -53,6 +91,8 @@ int get_number_of_words(int n) {
     return word_count;
 }
 
+// Read the file into a queue of words
+// text_file: user provided text file
 Queue<string> read_file(string text_file) {
     Queue<string> text_queue;
     ifstream input;
@@ -64,16 +104,19 @@ Queue<string> read_file(string text_file) {
     return text_queue;
 }
 
+// Create a map of the words in the queue.  The key will be of length N,
+// the value will be a vector of possible next words.
+// text_queue: a queue of words from the text file
+// n: the number of words to use for the key
 Map<Vector<string>, Vector<string>> create_map(Queue<string> & text_queue, int & n) {
-    // setup initial
     Map<Vector<string>, Vector<string>> ngram_map;
-
     Vector<string> key_vector;
     for (int i=0; i < n; i++) {
         key_vector.add(text_queue.dequeue());
     }
     string current_value = text_queue.dequeue();
-
+    // size + 2*n is used because we remove n words to start off in the preceeding lines.
+    // Also we need to wrap around fromt the last word in the file to the first word.
     for (int i; i < text_queue.size() + 2*n; i++) {
         ngram_map[key_vector] += current_value;
         text_queue.enqueue(key_vector[0]);
@@ -84,6 +127,8 @@ Map<Vector<string>, Vector<string>> create_map(Queue<string> & text_queue, int &
     return ngram_map;
 }
 
+// Find the value that occurs the most
+// count_map: a map of words and the number of times they appear
 string get_max(Map<string, int> & count_map) {
     int max = 0;
     for (string word : count_map) {
@@ -105,6 +150,9 @@ string get_max(Map<string, int> & count_map) {
     }
 }
 
+// Select the next word to be output
+// values: The possbile values to output.  The value that appears most will be output.  If there is a tie, one
+// is selected at random.
 string choose_next(Vector<string> & values) {
     if (values.size() == 1) {
         return values[0];
@@ -122,13 +170,16 @@ string choose_next(Vector<string> & values) {
     return next;
 }
 
+// Print the random output
+// text_map: a map of words and their possible successors
+// n: the number of words to use as the root
 bool generate_output(Map<Vector<string>, Vector<string>> & text_map, int & n) {
     int word_count = get_number_of_words(n);
     if (word_count == 0) {
         return false;
     }
-    int start = randomInteger(0, text_map.size() - 1);
     Vector<Vector<string>> keys = text_map.keys();
+    int start = randomInteger(0, keys.size() - 1);
     Vector<string> current = keys[start];
     cout << "... ";
     for (string k: current) {
@@ -144,16 +195,4 @@ bool generate_output(Map<Vector<string>, Vector<string>> & text_map, int & n) {
     return true;
 }
 
-int main() {
-    print_header();
-    string text_file = get_file();
-    Queue<string> text_queue = read_file(text_file);
-    int n = get_n();
-    Map<Vector<string>, Vector<string>> text_map = create_map(text_queue, n);
-    bool play = true;
-    while(play) {
-        play = generate_output(text_map, n);
-    }
-    cout << "Exiting." << endl;
-    return 0;
-}
+

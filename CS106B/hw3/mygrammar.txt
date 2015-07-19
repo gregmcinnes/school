@@ -1,0 +1,13 @@
+ADJEC::=happy|crazy|smart|sad|small|tiny|scary|big|loud|whiny|soggy|moist|itchy|great|fat|hungry|sweaty|smelly|sandy|salty|huge
+PNOUN::=Greg|Christina|Kelley|Mollie|Noreen|Peter|Murphy|Holly|Sophie
+TVERB::=kicked|petted|licked|built|ate|climbed|poked|killed
+DET::=the|a
+NOUN::=dog|cat|girl|surfboard|cousin|grandpa|child|mountain|beach|ball
+VERBP::=TVERB NOUNP|IVERB
+SENT::=NOUNP VERBP | NOUNP VERBP INTERJ | EXCLAM NOUNP VERBP | NOUNP VERBP LINKER NOUNP VERBP
+ADJP::=ADJEC|ADJEC ADJP
+IVERB::=died|collapsed|laughed|wept|surfed|hiked|jumped|walked|biked
+NOUNP::=DET ADJP NOUN|PNOUN
+INTERJ::=Ouch!|Yahoo!|Eww!|Whoa!|Cowabunga!|Whoops!|Oh dear!
+EXCLAM::=Oh!|Wow!|Look!|Jeez!|Ooh-la-la!
+LINKER::=when|after|before|while
