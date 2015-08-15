@@ -1,0 +1,35 @@
+# You should put your custom graph data in here.
+
+IMAGE
+map-custom.jpg
+736
+554
+
+VERTICES
+Dragon;420;462
+Skull;169;331
+Whirlpool;89;458
+Waterfall;477;277
+Ship;431;118
+Treasure;393;308
+X Trees;319;368
+Trident Mountain;440;237
+Lonely Island;621;255
+Blackhole;170;115
+
+EDGES
+Dragon;Skull;2000
+Dragon;Lonely Island;2200
+Dragon;X Trees;1800
+X Trees;Waterfall;300
+X Trees;Treasure;200
+X Trees;Skull;500
+Waterfall;Treasure;100
+Skull;Whirlpool;400
+Skull;Blackhole;0;true
+Ship;Blackhole;0;true
+Ship;Skull;800
+Ship;Lonely Island;300
+Ship;Trident Mountain;250
+Trident Mountain;Waterfall;25
+Trident Mountain;Treasure;125
